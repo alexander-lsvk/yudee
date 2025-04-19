@@ -223,8 +223,10 @@ function formatPropertyResponse(property: any, language: string) {
           name: getLocalizedName(a.amenity),
         })) || [],
       tags:
-        property.property_tags_junction?.map((t) => getLocalizedName(t.tag)) ||
-        [],
+        property.property_tags_junction?.map((t) => ({
+          id: t.tag?.id,
+          name: getLocalizedName(t.tag),
+        })) || [],
       images: property.property_images?.map((i) => i.url) || [],
       createdAt: new Date(property.created_at),
       commissionSplit: {

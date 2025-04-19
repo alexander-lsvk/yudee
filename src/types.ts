@@ -40,7 +40,7 @@ export interface Property {
   bathrooms: number | number[];
   images: string[];
   amenities: { id: string; name: string }[];
-  tags?: string[];
+  tags?: { id: string; name: string }[];
   agentId: string;
   agentName: string;
   agentAvatar: string;

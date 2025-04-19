@@ -677,28 +677,16 @@ function initializeFormData(
     .map(locItem => locItem.id)                        // pull out the UUID
     .filter(id => referenceData.locations.some(l => l.id === id));
 
+  // Match amenities by name since we store names in the database
   const amenityIds: string[] = (initialData?.amenities ?? [])
     // initialData.location is now { id: string; name: string }[]
     .map(lamenityItem => lamenityItem.id)                        // pull out the UUID
     .filter(id => referenceData.amenities.some(a => a.id === id));
 
-  // Match amenities by name since we store names in the database
-  // const amenityIds = initialData?.amenities?.map(amenityName => {
-  //   const amenity = amenities.find(a =>
-  //     a.name === amenityName || // Match English name
-  //     a.display_name_th === amenityName // Match Thai name
-  //   );
-  //   return amenity?.id;
-  // }).filter(Boolean) || [];
-
-  // Match tags by name since we store names in the database
-  const tagIds = initialData?.tags?.map(tagName => {
-    const tag = tags.find(t =>
-      t.name === tagName || // Match English name
-      t.display_name_th === tagName // Match Thai name
-    );
-    return tag?.id;
-  }).filter(Boolean) || [];
+  const tagIds: string[] = (initialData?.tags ?? [])
+    // initialData.location is now { id: string; name: string }[]
+    .map(tagItem => tagItem.id)                        // pull out the UUID
+    .filter(id => referenceData.tags.some(t => t.id === id));
 
   // Match bedroom by name since we store names in the database
   const bedroomId = initialData?.type === 'property' && initialData.bedrooms

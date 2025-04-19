@@ -91,8 +91,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onClick }) => {
             {formatDate(property.createdAt)}
           </div>
           <div className={`px-2 py-1 rounded-full text-sm font-medium ${property.type === 'property'
-              ? 'bg-blue-500 text-white'
-              : 'bg-purple-500 text-white'
+            ? 'bg-blue-500 text-white'
+            : 'bg-purple-500 text-white'
             }`}>
             {property.type === 'property' ? t('myListings.tabs.properties') : t('myListings.tabs.clientRequests')}
           </div>
@@ -153,7 +153,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onClick }) => {
                 key={index}
                 className="px-2 py-0.5 bg-gray-50 text-gray-600 rounded-full text-xs font-medium"
               >
-                {tag}
+                {tag.name}
               </span>
             ))}
             {property.tags.length > 3 && (

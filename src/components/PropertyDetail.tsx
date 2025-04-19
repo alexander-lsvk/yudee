@@ -436,7 +436,7 @@ const PropertyDetail: React.FC<PropertyDetailProps> = ({
                               key={index}
                               className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm"
                             >
-                              {tag}
+                              {tag.name}
                             </span>
                           ))}
                         </div>
