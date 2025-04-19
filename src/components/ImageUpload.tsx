@@ -1,15 +1,26 @@
 import React, { useRef, useState } from 'react';
-import { Image as ImageIcon, X, Loader2 } from 'lucide-react';
+import { Image as ImageIcon, X, Loader2, Star } from 'lucide-react';
 import { Button } from './ui/button';
+import { useTranslation } from 'react-i18next';
 
 interface ImageUploadProps {
   images: string[];
+  mainImageIndex?: number;
   onUpload: (file: File) => Promise<void>;
   onRemove: (url: string) => void;
+  onSetMainImage: (index: number) => void;
   uploading: boolean;
 }
 
-export function ImageUpload({ images, onUpload, onRemove, uploading }: ImageUploadProps) {
+export function ImageUpload({
+  images,
+  mainImageIndex = 0,
+  onUpload,
+  onRemove,
+  onSetMainImage,
+  uploading
+}: ImageUploadProps) {
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +32,7 @@ export function ImageUpload({ images, onUpload, onRemove, uploading }: ImageUplo
     try {
       // Convert FileList to array and process each file
       const fileArray = Array.from(files);
-      
+
       // Validate each file before uploading
       for (const file of fileArray) {
         // Check file type
@@ -54,11 +65,11 @@ export function ImageUpload({ images, onUpload, onRemove, uploading }: ImageUplo
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {/* Image Grid */}
         {images.map((url, index) => (
-          <div 
-            key={url} 
+          <div
+            key={url}
             className="relative aspect-square group bg-gray-100 rounded-lg overflow-hidden"
           >
-            <img 
+            <img
               src={url}
               alt={`Property image ${index + 1}`}
               className="w-full h-full object-cover"
@@ -67,13 +78,31 @@ export function ImageUpload({ images, onUpload, onRemove, uploading }: ImageUplo
                 e.currentTarget.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800';
               }}
             />
-            <button
-              type="button"
-              onClick={() => onRemove(url)}
-              className="absolute top-2 right-2 p-1 bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-              <X className="w-4 h-4" />
-            </button>
+            <div className="absolute top-2 right-2 flex gap-2">
+              <button
+                type="button"
+                onClick={() => onRemove(url)}
+                className="p-1.5 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => onSetMainImage(index)}
+                className={`p-1.5 rounded-full transition-colors ${index === mainImageIndex
+                    ? 'bg-yellow-500 text-white hover:bg-yellow-600'
+                    : 'bg-black/50 text-white hover:bg-black/70'
+                  }`}
+                title={index === mainImageIndex ? t('propertyForm.images.mainPhoto') : t('propertyForm.images.setAsMain')}
+              >
+                <Star className="w-4 h-4" fill={index === mainImageIndex ? "currentColor" : "none"} />
+              </button>
+            </div>
+            {index === mainImageIndex && (
+              <div className="absolute bottom-2 left-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">
+                {t('propertyForm.images.mainPhoto')}
+              </div>
+            )}
           </div>
         ))}
 
@@ -100,7 +129,7 @@ export function ImageUpload({ images, onUpload, onRemove, uploading }: ImageUplo
             ) : (
               <>
                 <ImageIcon className="w-6 h-6 text-gray-600" />
-                <span className="sr-only">Upload images</span>
+                <span className="sr-only">{t('propertyForm.images.upload')}</span>
               </>
             )}
           </Button>
@@ -115,7 +144,7 @@ export function ImageUpload({ images, onUpload, onRemove, uploading }: ImageUplo
 
       {images.length === 0 && !uploading && !error && (
         <div className="text-center text-sm text-gray-500">
-          No images uploaded yet
+          {t('propertyForm.images.noImages')}
         </div>
       )}
     </div>

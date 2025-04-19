@@ -122,7 +122,10 @@
     "images": {
       "label": "Images (Optional)",
       "noImages": "No images uploaded yet",
-      "upload": "Upload images"
+      "upload": "Upload images",
+      "uploading": "Uploading...",
+      "mainPhoto": "Main Photo",
+      "setAsMain": "Set as Main Photo"
     },
     "fields": {
       "category": {

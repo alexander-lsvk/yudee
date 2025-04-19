@@ -66,7 +66,14 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadingImages, setUploadingImages] = useState(false);
-  const [images, setImages] = useState<string[]>(initialData?.images || []);
+  const [mainImageIndex, setMainImageIndex] = useState(0);
+  const [images, setImages] = useState<string[]>(() => {
+    // If we have initial images, maintain their order
+    if (initialData?.images?.length) {
+      return initialData.images;
+    }
+    return [];
+  });
 
   const handleImageUpload = async (file: File) => {
     setUploadingImages(true);
@@ -89,16 +96,30 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
     }
   };
 
+  const handleSetMainImage = (index: number) => {
+    setMainImageIndex(index);
+    // Optionally reorder images to put main image first
+    // const newImages = [...images];
+    // const [mainImage] = newImages.splice(index, 1);
+    // newImages.unshift(mainImage);
+    // setImages(newImages);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormValid || isSubmitting) return;
 
     setIsSubmitting(true);
     try {
+      // Reorder images array to put main image first
+      const reorderedImages = [...images];
+      const [mainImage] = reorderedImages.splice(mainImageIndex, 1);
+      reorderedImages.unshift(mainImage);
+
       const submitData = {
         ...formData,
-        bedroomId: type === 'property' ? formData.bedroomId : formData.selectedBedrooms[0],
-        images
+        bedroomId: type === 'property' ? formData.bedroomId : formData.selectedBedrooms?.[0] || '',
+        images: reorderedImages
       };
       await onSubmit(submitData as PropertyFormData);
     } catch (error) {
@@ -223,8 +244,10 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
               <Label>{t('propertyForm.images.label')}</Label>
               <ImageUpload
                 images={images}
+                mainImageIndex={mainImageIndex}
                 onUpload={handleImageUpload}
                 onRemove={handleImageRemove}
+                onSetMainImage={handleSetMainImage}
                 uploading={uploadingImages}
               />
             </div>
