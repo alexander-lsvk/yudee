@@ -218,9 +218,10 @@ function formatPropertyResponse(property: any, language: string) {
           name: getLocalizedName(l.location),
         })) || [],
       amenities:
-        property.property_amenities_junction?.map((a) =>
-          getLocalizedName(a.amenity)
-        ) || [],
+        property.property_amenities_junction?.map((a) => ({
+          id: a.amenity?.id,
+          name: getLocalizedName(a.amenity),
+        })) || [],
       tags:
         property.property_tags_junction?.map((t) => getLocalizedName(t.tag)) ||
         [],

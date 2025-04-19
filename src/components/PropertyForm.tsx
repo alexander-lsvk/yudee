@@ -677,14 +677,19 @@ function initializeFormData(
     .map(locItem => locItem.id)                        // pull out the UUID
     .filter(id => referenceData.locations.some(l => l.id === id));
 
+  const amenityIds: string[] = (initialData?.amenities ?? [])
+    // initialData.location is now { id: string; name: string }[]
+    .map(lamenityItem => lamenityItem.id)                        // pull out the UUID
+    .filter(id => referenceData.amenities.some(a => a.id === id));
+
   // Match amenities by name since we store names in the database
-  const amenityIds = initialData?.amenities?.map(amenityName => {
-    const amenity = amenities.find(a =>
-      a.name === amenityName || // Match English name
-      a.display_name_th === amenityName // Match Thai name
-    );
-    return amenity?.id;
-  }).filter(Boolean) || [];
+  // const amenityIds = initialData?.amenities?.map(amenityName => {
+  //   const amenity = amenities.find(a =>
+  //     a.name === amenityName || // Match English name
+  //     a.display_name_th === amenityName // Match Thai name
+  //   );
+  //   return amenity?.id;
+  // }).filter(Boolean) || [];
 
   // Match tags by name since we store names in the database
   const tagIds = initialData?.tags?.map(tagName => {
