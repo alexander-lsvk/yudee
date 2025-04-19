@@ -1,0 +1,286 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back"
+  },
+  "deleteDialog": {
+    "title": "Delete Listing",
+    "description": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
+    "dealQuestion": {
+      "title": "Did you close this deal?",
+      "description": "This information helps us track successful transactions and improve our platform.",
+      "yes": "Yes, Deal Closed",
+      "no": "No"
+    }
+  },
+  "auth": {
+    "welcome": "Welcome to Yudee",
+    "welcomeDescription": "Connecting real estate agents to share properties, clients & commission",
+    "phoneNumber": "Phone Number",
+    "phonePlaceholder": "+66812345678",
+    "verificationCode": "Verification Code",
+    "codePlaceholder": "Enter code",
+    "sendCode": "Send Code",
+    "sending": "Sending...",
+    "verify": "Verify",
+    "verifying": "Verifying...",
+    "back": "Back",
+    "name": "Your Name",
+    "namePlaceholder": "Enter your name",
+    "completeSetup": "Complete Setup",
+    "skipForNow": "Skip for now",
+    "creatingAccount": "Creating Account..."
+  },
+  "profile": {
+    "settings": "Profile Settings",
+    "name": "Name",
+    "phone": "Phone Number",
+    "lineId": "Line ID",
+    "lineIdPlaceholder": "Enter your LINE ID",
+    "lineIdTip": "Tip: Add your LINE ID in profile settings to make it easier for other agents to contact you",
+    "premium": {
+      "title": "Yudee Premium",
+      "until": "Premium until {{date}}",
+      "cardInfo": "{{brand}} ending in {{last4}}",
+      "willEnd": "Your subscription will end on {{date}}",
+      "manageSubscription": "Manage Subscription",
+      "opening": "Opening Portal..."
+    },
+    "menu": {
+      "profileSettings": "Profile Settings",
+      "logout": "Log out"
+    },
+    "buttons": {
+      "saveChanges": "Save Changes",
+      "saving": "Saving..."
+    }
+  },
+  "header": {
+    "newPost": "New Post",
+    "myListings": "My Listings"
+  },
+  "subscription": {
+    "title": "Yudee Premium",
+    "features": {
+      "contacts": "📞  Instant access to agents contacts",
+      "line": "📲  Direct LINE messaging",
+      "unlimited": "📕  Unlimited contacts"
+    },
+    "offer": "🔥 Special Offer: Use Premium FREE now for 30 days",
+    "buttons": {
+      "continue": "Continue",
+      "maybeLater": "Maybe Later"
+    }
+  },
+  "myListings": {
+    "title": "My Listings",
+    "tabs": {
+      "all": "All",
+      "properties": "Properties",
+      "clientRequests": "Client Requests"
+    },
+    "empty": {
+      "all": {
+        "title": "No listings yet",
+        "description": "Start by creating your first listing"
+      },
+      "property": {
+        "title": "No properties listed",
+        "description": "List your first property"
+      },
+      "client-request": {
+        "title": "No client requests posted",
+        "description": "Post your first client request"
+      }
+    },
+    "createListing": "Create New Listing"
+  },
+  "propertyForm": {
+    "title": {
+      "new": {
+        "property": "New Property",
+        "client-request": "New Client Request"
+      },
+      "edit": {
+        "property": "Edit Property",
+        "client-request": "Edit Client Request"
+      }
+    },
+    "contact": {
+      "title": "Contact Information",
+      "phone": "Phone",
+      "lineId": "LINE ID",
+      "lineIdTip": "Tip: Add your LINE ID in profile settings to make it easier for other agents to contact you"
+    },
+    "images": {
+      "label": "Images (Optional)",
+      "noImages": "No images uploaded yet",
+      "upload": "Upload images"
+    },
+    "fields": {
+      "category": {
+        "label": "Category",
+        "placeholder": "Select property category",
+        "allCategories": "All Categories"
+      },
+      "location": {
+        "label": "Location",
+        "areas": "Areas",
+        "subAreas": "Sub Areas",
+        "stations": "BTS/MRT Stations"
+      },
+      "title": {
+        "label": "Title",
+        "placeholder": "Enter property title"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter property description"
+      },
+      "moveInDate": {
+        "label": "Preferred Move-in Date"
+      },
+      "price": {
+        "label": "Price",
+        "placeholder": "Enter price",
+        "range": {
+          "min": "Min Price",
+          "max": "Max Price",
+          "minPlaceholder": "Min price",
+          "maxPlaceholder": "Max price"
+        }
+      },
+      "area": {
+        "label": "Area",
+        "placeholder": "Enter area in square meters",
+        "range": {
+          "min": "Min Area",
+          "max": "Max Area",
+          "minPlaceholder": "Min area",
+          "maxPlaceholder": "Max area"
+        },
+        "unit": "sqm"
+      },
+      "bedrooms": {
+        "label": "Bedrooms",
+        "placeholder": "Select number of bedrooms"
+      },
+      "bathrooms": {
+        "label": "Bathrooms",
+        "placeholder": "Select number of bathrooms",
+        "single": "bathroom",
+        "multiple": "bathrooms"
+      },
+      "amenities": {
+        "label": "Amenities"
+      },
+      "tags": {
+        "label": "Tags"
+      },
+      "commission": {
+        "label": "Commission Split",
+        "type": {
+          "percentage": "Percentage",
+          "fixed": "Fixed Amount"
+        }
+      }
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "create": {
+        "property": "List Property",
+        "client-request": "Post Request"
+      },
+      "update": "Save Changes",
+      "listing": "Listing...",
+      "posting": "Posting...",
+      "saving": "Saving..."
+    }
+  },
+  "propertyDetail": {
+    "images": {
+      "previous": "Previous image",
+      "next": "Next image",
+      "count": "{{current}} / {{total}}",
+      "thumbnail": "Thumbnail {{number}}"
+    },
+    "district": "District",
+    "btsMrt": "BTS/MRT",
+    "pricePerMonth": "/ month",
+    "bedrooms": {
+      "label": "Bedrooms",
+      "studio": "Studio",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4plus": "4+"
+    },
+    "bathrooms": {
+      "label": "Bathrooms",
+      "count": "{{count}}"
+    },
+    "area": {
+      "label": "Area",
+      "fixed": "{{value}} sqm",
+      "range": "{{min}}-{{max}} sqm"
+    },
+    "commission": {
+      "label": "Commission",
+      "percentage": "{{value}}% Split",
+      "fixed": "Fixed ฿{{value}}"
+    },
+    "projectDetails": "Project Details",
+    "projectName": "Project Name",
+    "floor": "Floor",
+    "buildYear": "Build Year",
+    "moveInDate": "Move-in Date",
+    "description": "Description",
+    "features": "Features",
+    "amenities": "Amenities",
+    "tags": "Tags",
+    "realEstateAgent": "Real Estate Agent",
+    "contact": {
+      "phoneNumber": "Phone",
+      "copied": "Copied!",
+      "copyNumber": "Copy number",
+      "call": "Call",
+      "copyLineId": "Copy LINE ID",
+      "openInLine": "Open in LINE"
+    },
+    "time": {
+      "minutes": "{{count}}m ago",
+      "hours": "{{count}}h ago",
+      "days": "{{count}}d ago"
+    },
+    "price": {
+      "fixed": "฿{{value}}",
+      "range": "฿{{min}} - ฿{{max}}"
+    },
+    "noResults": "No properties found matching your criteria"
+  },
+  "filters": {
+    "moreFilters": "More Filters",
+    "reset": "Reset",
+    "apply": "Apply Filters",
+    "sort": {
+      "new": "New",
+      "old": "Old",
+      "priceAsc": "Price ↑",
+      "priceDesc": "Price ↓"
+    },
+    "location": {
+      "area": "Area",
+      "bts": "BTS/MRT",
+      "selectAreas": "Select Areas",
+      "selectStations": "Select BTS/MRT Stations",
+      "more": "More"
+    }
+  }
+}
