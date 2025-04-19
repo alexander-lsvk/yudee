@@ -285,11 +285,10 @@ const PropertyDetail: React.FC<PropertyDetailProps> = ({
                       <button
                         key={image}
                         onClick={() => setCurrentImageIndex(index)}
-                        className={`relative flex-shrink-0 w-12 h-12 md:w-16 md:h-16 p-0.5 rounded-lg transition-opacity ${
-                          index === currentImageIndex
-                            ? 'ring-2 ring-white ring-offset-0'
-                            : 'opacity-70 hover:opacity-100'
-                        }`}
+                        className={`relative flex-shrink-0 w-12 h-12 md:w-16 md:h-16 p-0.5 rounded-lg transition-opacity ${index === currentImageIndex
+                          ? 'ring-2 ring-white ring-offset-0'
+                          : 'opacity-70 hover:opacity-100'
+                          }`}
                       >
                         <img
                           src={image}
@@ -309,7 +308,7 @@ const PropertyDetail: React.FC<PropertyDetailProps> = ({
                   <div className="flex items-center text-gray-600">
                     <MapPin size={18} className="mr-1.5 shrink-0" />
                     <div>
-                      {Array.isArray(property.location) ? property.location.join(' • ') : property.location}
+                      {Array.isArray(property.location) ? property.location.map(loc => loc.name).join(' • ') : property.location}
                     </div>
                   </div>
 
@@ -494,7 +493,7 @@ const PropertyDetail: React.FC<PropertyDetailProps> = ({
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                 <Button size="icon" className="bg-[#00B900] hover:bg-[#009900] text-white h-10 w-10">
-                                  <img 
+                                  <img
                                     src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg"
                                     alt="LINE"
                                     className="h-5 w-5"
@@ -550,7 +549,7 @@ const PropertyDetail: React.FC<PropertyDetailProps> = ({
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                 <Button className="bg-[#00B900] hover:bg-[#009900] text-white">
-                                  <img 
+                                  <img
                                     src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg"
                                     alt="LINE"
                                     className="h-4 w-4 mr-2"

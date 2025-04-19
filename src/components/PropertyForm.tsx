@@ -32,7 +32,7 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
   const referenceData = useReferenceData();
   const { loading: referenceDataLoading, error: referenceDataError, initialized } = referenceData;
 
-  const [formData, setFormData] = useState<Omit<PropertyFormData, 'images'>>(() => 
+  const [formData, setFormData] = useState<Omit<PropertyFormData, 'images'>>(() =>
     initialized ? initializeFormData(type, initialData, referenceData) : {
       type,
       category_id: null, // Changed from empty string to null
@@ -92,7 +92,7 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormValid || isSubmitting) return;
-    
+
     setIsSubmitting(true);
     try {
       const submitData = {
@@ -163,7 +163,7 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
     );
   }
 
-  const formTitle = initialData 
+  const formTitle = initialData
     ? t(`propertyForm.title.edit.${type}`)
     : t(`propertyForm.title.new.${type}`);
 
@@ -173,7 +173,7 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
         <VisuallyHidden>
           <DialogTitle>{formTitle}</DialogTitle>
         </VisuallyHidden>
-        
+
         <div className="sticky top-0 z-10 flex items-center justify-between p-4 bg-white border-b">
           <div className="flex items-center gap-2">
             <span className="px-2 py-1 text-sm font-medium bg-gray-100 rounded-full">
@@ -228,7 +228,7 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
                 uploading={uploadingImages}
               />
             </div>
-            
+
             <div>
               <Label>{t('propertyForm.fields.category.label')}</Label>
               <Select
@@ -369,9 +369,9 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
                 <Input
                   type="number"
                   value={formData.price ?? ''}
-                  onChange={(e) => setFormData({ 
-                    ...formData, 
-                    price: e.target.value ? Number(e.target.value) : undefined 
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    price: e.target.value ? Number(e.target.value) : undefined
                   })}
                   placeholder={t('propertyForm.fields.price.placeholder')}
                   min="0"
@@ -584,7 +584,7 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
               <div className="grid grid-cols-2 gap-4">
                 <Select
                   value={formData.commissionSplit.type}
-                  onValueChange={(value: 'percentage' | 'fixed') => 
+                  onValueChange={(value: 'percentage' | 'fixed') =>
                     setFormData(prev => ({
                       ...prev,
                       commissionSplit: { ...prev.commissionSplit, type: value }
@@ -606,9 +606,9 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
                     const value = e.target.value;
                     setFormData(prev => ({
                       ...prev,
-                      commissionSplit: { 
-                        ...prev.commissionSplit, 
-                        value: value === '' ? 0 : parseFloat(value) 
+                      commissionSplit: {
+                        ...prev.commissionSplit,
+                        value: value === '' ? 0 : parseFloat(value)
                       }
                     }));
                   }}
@@ -624,7 +624,7 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
           <Button type="button" variant="outline" onClick={onClose}>
             {t('propertyForm.buttons.cancel')}
           </Button>
-          <Button 
+          <Button
             onClick={handleSubmit}
             disabled={!isFormValid || isSubmitting || uploadingImages}
             className="min-w-[120px]"
@@ -632,15 +632,15 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
             {isSubmitting ? (
               <div className="flex items-center">
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                {initialData 
+                {initialData
                   ? t('propertyForm.buttons.saving')
-                  : type === 'property' 
+                  : type === 'property'
                     ? t('propertyForm.buttons.listing')
                     : t('propertyForm.buttons.posting')
                 }
               </div>
             ) : (
-              initialData 
+              initialData
                 ? t('propertyForm.buttons.update')
                 : t(`propertyForm.buttons.create.${type}`)
             )}
@@ -664,23 +664,22 @@ function initializeFormData(
     propertyBedrooms,
   } = referenceData;
 
+  console.log('initialData loc:', initialData?.location);
+  console.log('referenceData loc:', referenceData.locations);
   // Find category by name since we store the name in the database
-  const categoryId = initialData?.category 
+  const categoryId = initialData?.category
     ? propertyCategories.find(c => c.name === initialData.category)?.id
     : null; // Changed from empty string to null
 
   // Match locations by name since we store names in the database
-  const locationIds = initialData?.location?.map(locName => {
-    const location = locations.find(l => 
-      l.name === locName || // Match English name
-      l.display_name_th === locName // Match Thai name
-    );
-    return location?.id;
-  }).filter(Boolean) || [];
+  const locationIds: string[] = (initialData?.location ?? [])
+    // initialData.location is now { id: string; name: string }[]
+    .map(locItem => locItem.id)                        // pull out the UUID
+    .filter(id => referenceData.locations.some(l => l.id === id));
 
   // Match amenities by name since we store names in the database
   const amenityIds = initialData?.amenities?.map(amenityName => {
-    const amenity = amenities.find(a => 
+    const amenity = amenities.find(a =>
       a.name === amenityName || // Match English name
       a.display_name_th === amenityName // Match Thai name
     );
@@ -689,7 +688,7 @@ function initializeFormData(
 
   // Match tags by name since we store names in the database
   const tagIds = initialData?.tags?.map(tagName => {
-    const tag = tags.find(t => 
+    const tag = tags.find(t =>
       t.name === tagName || // Match English name
       t.display_name_th === tagName // Match Thai name
     );
@@ -698,23 +697,23 @@ function initializeFormData(
 
   // Match bedroom by name since we store names in the database
   const bedroomId = initialData?.type === 'property' && initialData.bedrooms
-    ? propertyBedrooms.find(b => 
-        b.name === initialData.bedrooms || // Match English name
-        b.display_name_th === initialData.bedrooms // Match Thai name
-      )?.id || ''
+    ? propertyBedrooms.find(b =>
+      b.name === initialData.bedrooms || // Match English name
+      b.display_name_th === initialData.bedrooms // Match Thai name
+    )?.id || ''
     : '';
 
   // Match bedrooms for client request
   const selectedBedroomIds = initialData?.type === 'client-request' && initialData.bedrooms
     ? (Array.isArray(initialData.bedrooms) ? initialData.bedrooms : [initialData.bedrooms])
-        .map(name => {
-          const bedroom = propertyBedrooms.find(b => 
-            b.name === name || // Match English name
-            b.display_name_th === name // Match Thai name
-          );
-          return bedroom?.id;
-        })
-        .filter(Boolean)
+      .map(name => {
+        const bedroom = propertyBedrooms.find(b =>
+          b.name === name || // Match English name
+          b.display_name_th === name // Match Thai name
+        );
+        return bedroom?.id;
+      })
+      .filter(Boolean)
     : [];
 
   return {

@@ -12,29 +12,29 @@ interface PropertyCardProps {
 const PropertyCard: React.FC<PropertyCardProps> = ({ property, onClick }) => {
   const { t, i18n } = useTranslation();
 
-  const commissionText = property.commissionSplit.type === 'percentage' 
+  const commissionText = property.commissionSplit.type === 'percentage'
     ? t('propertyDetail.commission.percentage', { value: property.commissionSplit.value })
     : t('propertyDetail.commission.fixed', { value: property.commissionSplit.value.toLocaleString() });
 
   const priceDisplay = property.type === 'property'
     ? t('propertyDetail.price.fixed', { value: property.price?.toLocaleString() })
-    : t('propertyDetail.price.range', { 
-        min: property.priceRange?.min.toLocaleString(),
-        max: property.priceRange?.max.toLocaleString()
-      });
+    : t('propertyDetail.price.range', {
+      min: property.priceRange?.min.toLocaleString(),
+      max: property.priceRange?.max.toLocaleString()
+    });
 
   const areaDisplay = property.type === 'property'
     ? t('propertyDetail.area.fixed', { value: property.area.toLocaleString() })
-    : t('propertyDetail.area.range', { 
-        min: property.area.min.toLocaleString(),
-        max: property.area.max.toLocaleString()
-      });
+    : t('propertyDetail.area.range', {
+      min: property.area.min.toLocaleString(),
+      max: property.area.max.toLocaleString()
+    });
 
   const bedroomsDisplay = property.type === 'property'
-  ? String(property.bedrooms).replace(/-bedroom/g, '')
-  : Array.isArray(property.bedrooms)
-    ? property.bedrooms.map((b: string) => b.replace(/-bedroom/g, '')).join(' / ')
-    : String(property.bedrooms).replace(/-bedroom/g, '');
+    ? String(property.bedrooms).replace(/-bedroom/g, '')
+    : Array.isArray(property.bedrooms)
+      ? property.bedrooms.map((b: string) => b.replace(/-bedroom/g, '')).join(' / ')
+      : String(property.bedrooms).replace(/-bedroom/g, '');
 
 
   const bathsDisplay = Array.isArray(property.bathrooms)
@@ -90,11 +90,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onClick }) => {
             <Calendar size={14} className="shrink-0" />
             {formatDate(property.createdAt)}
           </div>
-          <div className={`px-2 py-1 rounded-full text-sm font-medium ${
-            property.type === 'property' 
-              ? 'bg-blue-500 text-white' 
+          <div className={`px-2 py-1 rounded-full text-sm font-medium ${property.type === 'property'
+              ? 'bg-blue-500 text-white'
               : 'bg-purple-500 text-white'
-          }`}>
+            }`}>
             {property.type === 'property' ? t('myListings.tabs.properties') : t('myListings.tabs.clientRequests')}
           </div>
         </div>
@@ -117,10 +116,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onClick }) => {
           <div className="flex items-start gap-1.5">
             <MapPin size={16} className="shrink-0 mt-1 text-gray-500" />
             <div className="text-sm text-gray-600">
-              {formatLocationList(Array.isArray(property.location) ? property.location : [property.location])}
+              {formatLocationList(Array.isArray(property.location) ? property.location.map(loc => loc.name) : [property.location])}
             </div>
           </div>
-          
+
           {property.btsMrtNearby && property.btsMrtNearby.length > 0 && (
             <div className="flex items-start gap-1.5">
               <Train size={16} className="shrink-0 mt-1 text-gray-500" />
@@ -169,10 +168,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onClick }) => {
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Avatar 
-              name={property.agentName} 
-              imageUrl={property.agentAvatar} 
-              size="sm" 
+            <Avatar
+              name={property.agentName}
+              imageUrl={property.agentAvatar}
+              size="sm"
             />
             <span className="text-sm font-medium text-gray-700">{property.agentName}</span>
           </div>

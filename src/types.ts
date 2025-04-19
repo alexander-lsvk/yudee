@@ -1,17 +1,29 @@
-import { Database } from './lib/database.types';
+import { Database } from "./lib/database.types";
 
-export type PropertyCategory = 'condo' | 'apartment' | 'house' | 'townhouse' | 'shophouse' | 'land' | 'office' | 'retail' | 'warehouse' | 'hotel' | 'resort' | 'factory';
-export type LocationType = 'area' | 'sub_area' | 'bts' | 'mrt';
+export type PropertyCategory =
+  | "condo"
+  | "apartment"
+  | "house"
+  | "townhouse"
+  | "shophouse"
+  | "land"
+  | "office"
+  | "retail"
+  | "warehouse"
+  | "hotel"
+  | "resort"
+  | "factory";
+export type LocationType = "area" | "sub_area" | "bts" | "mrt";
 
 export interface Property {
   id: string;
-  type: 'property' | 'client-request';
+  type: "property" | "client-request";
   category: PropertyCategory;
   categoryDisplay: string;
   categoryDisplayTh: string;
   title: string;
   description: string;
-  location: string[];
+  location: { id: string; name: string }[];
   district?: string;
   projectName?: string;
   btsMrtNearby?: string[];
@@ -37,13 +49,13 @@ export interface Property {
   contactLine?: string;
   createdAt: Date;
   commissionSplit: {
-    type: 'fixed' | 'percentage';
+    type: "fixed" | "percentage";
     value: number;
   };
 }
 
 export interface PropertyFormData {
-  type: 'property' | 'client-request';
+  type: "property" | "client-request";
   category_id: string; // Changed from category to category_id
   title: string;
   description: string;
@@ -62,7 +74,7 @@ export interface PropertyFormData {
   selectedBedrooms?: string[];
   bathrooms: number | number[];
   commissionSplit: {
-    type: 'fixed' | 'percentage';
+    type: "fixed" | "percentage";
     value: number;
   };
   amenities: string[];
@@ -71,7 +83,7 @@ export interface PropertyFormData {
 }
 
 export interface PropertyFilters {
-  type: 'property' | 'client-request';
+  type: "property" | "client-request";
   categoryIds?: string[]; // Changed from category to categoryIds
   bedroomIds?: string[];
   location?: string[];
@@ -88,13 +100,13 @@ export interface PropertyFilters {
 
 export interface SortOption {
   field: keyof Property;
-  direction: 'asc' | 'desc';
+  direction: "asc" | "desc";
 }
 
 export interface DeletedProperty {
   id: string;
   originalId: string;
-  type: 'property' | 'client-request';
+  type: "property" | "client-request";
   category: PropertyCategory;
   title: string;
   description: string;
@@ -110,7 +122,7 @@ export interface DeletedProperty {
   };
   bathrooms: number;
   commissionSplit: {
-    type: 'fixed' | 'percentage';
+    type: "fixed" | "percentage";
     value: number;
   };
   locations: string[];
@@ -139,24 +151,24 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export interface Database {
   public: {
     Tables: {
-      [_ in string]: any
-    }
+      [_ in string]: any;
+    };
     Views: {
-      [_ in string]: any
-    }
+      [_ in string]: any;
+    };
     Functions: {
-      [_ in string]: any
-    }
+      [_ in string]: any;
+    };
     Enums: {
-      [_ in string]: any
-    }
+      [_ in string]: any;
+    };
     CompositeTypes: {
-      [_ in string]: any
-    }
-  }
+      [_ in string]: any;
+    };
+  };
 }
