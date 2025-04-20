@@ -205,6 +205,14 @@
       "listing": "Listing...",
       "posting": "Posting...",
       "saving": "Saving..."
+    },
+    "errors": {
+      "priceRange": "Please enter a valid price range. For properties, enter a single price. For client requests, enter both minimum and maximum prices.",
+      "areaRange": "Please enter a valid area range. For properties, enter a single area. For client requests, enter both minimum and maximum areas.",
+      "required": "Please fill in all required fields.",
+      "invalidNumber": "Please enter a valid number.",
+      "minMax": "Minimum value must be less than maximum value.",
+      "imageUpload": "Failed to upload images. Please try again."
     }
   },
   "propertyDetail": {

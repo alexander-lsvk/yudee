@@ -156,6 +156,27 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
     }
   }, [formData, type]);
 
+  const formatNumberInput = (value: string) => {
+    // Remove any non-numeric characters except . and ,
+    const cleaned = value.replace(/[^\d.,]/g, '');
+
+    // Handle decimal part
+    const parts = cleaned.split('.');
+    const integerPart = parts[0].replace(/,/g, ''); // Remove any existing commas
+    const decimalPart = parts[1]?.slice(0, 2); // Limit to 2 decimal places
+
+    // Add commas to integer part
+    const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
+  };
+
+  const parseFormattedNumber = (value: string) => {
+    if (!value) return undefined;
+    const numericValue = Number(value.replace(/,/g, ''));
+    return isNaN(numericValue) ? undefined : numericValue;
+  };
+
   if (referenceDataLoading) {
     return (
       <Dialog open={true} onOpenChange={() => onClose()}>
@@ -390,14 +411,16 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
               <div>
                 <Label>{t('propertyForm.fields.price.label')}</Label>
                 <Input
-                  type="number"
-                  value={formData.price ?? ''}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    price: e.target.value ? Number(e.target.value) : undefined
-                  })}
+                  type="text"
+                  value={formData.price ? formatNumberInput(formData.price.toString()) : ''}
+                  onChange={(e) => {
+                    const numericValue = parseFormattedNumber(e.target.value);
+                    setFormData({
+                      ...formData,
+                      price: numericValue
+                    });
+                  }}
                   placeholder={t('propertyForm.fields.price.placeholder')}
-                  min="0"
                 />
               </div>
             ) : (
@@ -405,33 +428,37 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
                 <div>
                   <Label>{t('propertyForm.fields.price.range.min')}</Label>
                   <Input
-                    type="number"
-                    value={formData.priceRange?.min ?? ''}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      priceRange: {
-                        ...formData.priceRange,
-                        min: e.target.value ? Number(e.target.value) : undefined
-                      }
-                    })}
+                    type="text"
+                    value={formData.priceRange?.min ? formatNumberInput(formData.priceRange.min.toString()) : ''}
+                    onChange={(e) => {
+                      const numericValue = parseFormattedNumber(e.target.value);
+                      setFormData({
+                        ...formData,
+                        priceRange: {
+                          ...formData.priceRange,
+                          min: numericValue
+                        }
+                      });
+                    }}
                     placeholder={t('propertyForm.fields.price.range.minPlaceholder')}
-                    min="0"
                   />
                 </div>
                 <div>
                   <Label>{t('propertyForm.fields.price.range.max')}</Label>
                   <Input
-                    type="number"
-                    value={formData.priceRange?.max ?? ''}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      priceRange: {
-                        ...formData.priceRange,
-                        max: e.target.value ? Number(e.target.value) : undefined
-                      }
-                    })}
+                    type="text"
+                    value={formData.priceRange?.max ? formatNumberInput(formData.priceRange.max.toString()) : ''}
+                    onChange={(e) => {
+                      const numericValue = parseFormattedNumber(e.target.value);
+                      setFormData({
+                        ...formData,
+                        priceRange: {
+                          ...formData.priceRange,
+                          max: numericValue
+                        }
+                      });
+                    }}
                     placeholder={t('propertyForm.fields.price.range.maxPlaceholder')}
-                    min="0"
                   />
                 </div>
               </div>
@@ -441,14 +468,16 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
               <div>
                 <Label>{t('propertyForm.fields.area.label')}</Label>
                 <Input
-                  type="number"
-                  value={formData.area ?? ''}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    area: e.target.value ? Number(e.target.value) : undefined
-                  })}
+                  type="text"
+                  value={typeof formData.area === 'number' ? formatNumberInput(formData.area.toString()) : ''}
+                  onChange={(e) => {
+                    const numericValue = parseFormattedNumber(e.target.value);
+                    setFormData({
+                      ...formData,
+                      area: numericValue
+                    });
+                  }}
                   placeholder={t('propertyForm.fields.area.placeholder')}
-                  min="0"
                 />
               </div>
             ) : (
@@ -456,33 +485,37 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
                 <div>
                   <Label>{t('propertyForm.fields.area.range.min')}</Label>
                   <Input
-                    type="number"
-                    value={typeof formData.area === 'object' ? formData.area.min : ''}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      area: {
-                        min: e.target.value,
-                        max: typeof formData.area === 'object' ? formData.area.max : ''
-                      }
-                    })}
+                    type="text"
+                    value={typeof formData.area === 'object' ? formatNumberInput(formData.area.min.toString()) : ''}
+                    onChange={(e) => {
+                      const numericValue = parseFormattedNumber(e.target.value);
+                      setFormData({
+                        ...formData,
+                        area: {
+                          min: numericValue,
+                          max: typeof formData.area === 'object' ? formData.area.max : ''
+                        }
+                      });
+                    }}
                     placeholder={t('propertyForm.fields.area.range.minPlaceholder')}
-                    min="0"
                   />
                 </div>
                 <div>
                   <Label>{t('propertyForm.fields.area.range.max')}</Label>
                   <Input
-                    type="number"
-                    value={typeof formData.area === 'object' ? formData.area.max : ''}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      area: {
-                        min: typeof formData.area === 'object' ? formData.area.min : '',
-                        max: e.target.value
-                      }
-                    })}
+                    type="text"
+                    value={typeof formData.area === 'object' ? formatNumberInput(formData.area.max.toString()) : ''}
+                    onChange={(e) => {
+                      const numericValue = parseFormattedNumber(e.target.value);
+                      setFormData({
+                        ...formData,
+                        area: {
+                          min: typeof formData.area === 'object' ? formData.area.min : '',
+                          max: numericValue
+                        }
+                      });
+                    }}
                     placeholder={t('propertyForm.fields.area.range.maxPlaceholder')}
-                    min="0"
                   />
                 </div>
               </div>
@@ -623,20 +656,18 @@ export default function PropertyForm({ type, initialData, onSubmit, onClose }: P
                   </SelectContent>
                 </Select>
                 <Input
-                  type="number"
-                  value={formData.commissionSplit.value || ''}
+                  type="text"
+                  value={formData.commissionSplit.value ? formatNumberInput(formData.commissionSplit.value.toString()) : ''}
                   onChange={(e) => {
-                    const value = e.target.value;
+                    const numericValue = parseFormattedNumber(e.target.value);
                     setFormData(prev => ({
                       ...prev,
                       commissionSplit: {
                         ...prev.commissionSplit,
-                        value: value === '' ? 0 : parseFloat(value)
+                        value: numericValue ?? 0
                       }
                     }));
                   }}
-                  min="0"
-                  step={formData.commissionSplit.type === 'percentage' ? '1' : '1000'}
                 />
               </div>
             </div>

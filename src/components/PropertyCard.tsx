@@ -85,7 +85,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onClick }) => {
             <Image className="w-12 h-12 text-gray-300" />
           </div>
         )}
-        <div className="absolute top-2 right-2 flex items-center gap-2">
+        <div className="absolute top-2 right-2 flex items-center gap-1">
           <div className="bg-black/75 text-white px-2 py-1 rounded-full text-sm flex items-center gap-1">
             <Calendar size={14} className="shrink-0" />
             {formatDate(property.createdAt)}

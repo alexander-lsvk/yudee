@@ -507,19 +507,39 @@ export async function createProperty(data: PropertyFormData) {
     }
 
     // Insert images
-    if (data.images.length > 0) {
+    const hasValidImages = data.images.some((url) => url && url.trim() !== "");
+    if (hasValidImages) {
       console.log("[createProperty] Adding images");
       const { error: imageError } = await supabase
         .from("property_images")
         .insert(
-          data.images.map((url) => ({
-            property_id: property.id,
-            url,
-          }))
+          data.images
+            .filter((url) => url && url.trim() !== "")
+            .map((url) => ({
+              property_id: property.id,
+              url,
+            }))
         );
 
       if (imageError) {
         throw new Error(`Error adding images: ${imageError.message}`);
+      }
+    } else {
+      // Use default Bangkok skyline image when no valid images are provided
+      console.log("[createProperty] Using default image");
+      const defaultImageUrl =
+        "https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?q=80&w=800&auto=format&";
+      const { error: imageError } = await supabase
+        .from("property_images")
+        .insert([
+          {
+            property_id: property.id,
+            url: defaultImageUrl,
+          },
+        ]);
+
+      if (imageError) {
+        throw new Error(`Error adding default image: ${imageError.message}`);
       }
     }
 

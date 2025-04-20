@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, ListFilter } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,7 @@ import { AuthOverlay } from '@/components/AuthOverlay';
 import ProfileButton from '@/components/ProfileButton';
 import ProfileDialog from '@/components/ProfileDialog';
 import { LanguageSwitch } from '@/components/LanguageSwitch';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
 const PropertiesPage = () => {
   const { t } = useTranslation();
@@ -24,30 +25,59 @@ const PropertiesPage = () => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [filters, setFilters] = useState<PropertyFilters>({ type: activeTab });
   const [sortOption, setSortOption] = useState<SortOption>({ field: 'createdAt', direction: 'desc' });
-  const [error, setError] = useState<string | null>(null);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
+  const [showErrorDialog, setShowErrorDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const { data: properties, isLoading, error: fetchError, refetch } = useProperties(filters, sortOption);
-  const { createProperty } = usePropertyMutations();
+  const { createProperty, updateProperty, deleteProperty } = usePropertyMutations();
 
   const handleProfileUpdate = async () => {
     setShowProfileDialog(false);
   };
 
   const handlePropertySubmit = async (data: PropertyFormData) => {
-    if (!user) {
-      refreshProfile();
-      return;
-    }
-
-    setError(null);
     try {
-      await createProperty.mutateAsync(data);
+      if (selectedProperty) {
+        await updateProperty.mutateAsync(selectedProperty.id, data);
+      } else {
+        await createProperty.mutateAsync(data);
+      }
       setShowForm(false);
+      setSelectedProperty(null);
       refetch();
     } catch (error) {
-      console.error('Error creating property:', error);
-      setError(error instanceof Error ? error.message : t('common.error'));
+      console.error("Error submitting property:", error);
+      let message = t('common.errorOccurred');
+
+      if (error instanceof Error) {
+        if (error.message.includes('valid_area_range')) {
+          message = t('propertyForm.errors.areaRange');
+        } else if (error.message.includes('valid_price_range')) {
+          message = t('propertyForm.errors.priceRange');
+        } else if (error.message.includes('required')) {
+          message = t('propertyForm.errors.required');
+        } else if (error.message.includes('invalid_number')) {
+          message = t('propertyForm.errors.invalidNumber');
+        } else if (error.message.includes('min_max')) {
+          message = t('propertyForm.errors.minMax');
+        } else if (error.message.includes('property_images')) {
+          message = t('propertyForm.errors.imageUpload');
+        }
+      }
+
+      setErrorMessage(message);
+      setShowErrorDialog(true);
+    }
+  };
+
+  const handleDelete = async (property: Property) => {
+    try {
+      await deleteProperty.mutateAsync(property.id);
+      refetch();
+    } catch (error) {
+      console.error("Error deleting property:", error);
+      setShowErrorDialog(true);
     }
   };
 
@@ -72,15 +102,18 @@ const PropertiesPage = () => {
             </div>
             {user && !loading && (
               <div className="flex items-center gap-2">
-                <Button 
-                  onClick={() => setShowForm(true)}
+                <Button
+                  onClick={() => {
+                    setFormType(activeTab);
+                    setShowForm(true);
+                  }}
                   size="sm"
                   className="hidden md:flex h-9 px-4"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   <span className="text-sm font-medium">{t('header.newPost')}</span>
                 </Button>
-                
+
                 {/* 
                 <Button
                   onClick={() => setShowForm(true)}
@@ -101,7 +134,7 @@ const PropertiesPage = () => {
                   </Button>
                 </Link>
                 <div className="w-px h-6 bg-gray-200" />
-                <ProfileButton 
+                <ProfileButton
                   onEditProfile={() => setShowProfileDialog(true)}
                   onLogout={signOut}
                 />
@@ -112,12 +145,6 @@ const PropertiesPage = () => {
       </header>
 
       <main className="max-w-[1385px] mx-auto px-4 sm:px-6 lg:px-8 py-3">
-        {error && (
-          <div className="mb-3 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-600">{error}</p>
-          </div>
-        )}
-
         <div className="flex justify-center mb-3">
           <div className="bg-white rounded-lg shadow-sm p-0.5">
             <Button
@@ -165,7 +192,10 @@ const PropertiesPage = () => {
 
         {user && !loading && (
           <button
-            onClick={() => setShowForm(true)}
+            onClick={() => {
+              setFormType(activeTab);
+              setShowForm(true);
+            }}
             className="md:hidden fixed right-4 bottom-4 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-200"
           >
             <Plus className="h-6 w-6" />
@@ -199,6 +229,19 @@ const PropertiesPage = () => {
         onOpenChange={setShowProfileDialog}
         onSave={handleProfileUpdate}
       />
+
+      {showErrorDialog && (
+        <Dialog open={showErrorDialog} onOpenChange={setShowErrorDialog}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="text-red-600">{t('common.error')}</DialogTitle>
+              <DialogDescription>
+                {errorMessage}
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
